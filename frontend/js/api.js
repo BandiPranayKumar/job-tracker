@@ -3,7 +3,10 @@
 // Syllabus: Frontend Unit III - ES6+ modules, Promises, async/await
 // Syllabus: Frontend Unit III - Fetch API (browser's built-in HTTP client)
 
-const BASE_URL = 'http://localhost:5000/api';
+// Use relative URL in production (same server), fallback to localhost for local dev
+const BASE_URL = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1'
+  ? 'http://localhost:5000/api'
+  : '/api';
 
 // ── Token Management ──────────────────────────────────────────
 // Store JWT in localStorage; attach to every protected request

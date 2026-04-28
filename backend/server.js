@@ -17,8 +17,12 @@ const authRoutes = require('./routes/authRoutes');
 const applicationRoutes = require('./routes/applicationRoutes');
 const { notFound, errorHandler } = require('./middleware/errorMiddleware');
 
-// --- Connect to MongoDB ---
-connectDB();
+// --- Connect to MongoDB (won't crash server if it fails) ---
+if (process.env.MONGO_URI) {
+  connectDB();
+} else {
+  console.warn('⚠️  MONGO_URI not set. Database features will not work.');
+}
 
 const app = express();
 
@@ -26,11 +30,9 @@ const app = express();
 //  MIDDLEWARE (applied to all routes)
 // ─────────────────────────────────────────
 
-// CORS: allow requests from our frontend origin
+// CORS: allow all origins (self-hosted on Render, so frontend = same domain)
 app.use(cors({
-  origin: process.env.NODE_ENV === 'production' 
-    ? 'https://your-production-domain.com' 
-    : 'http://127.0.0.1:5500', // Live Server default port
+  origin: true,
   credentials: true,
 }));
 
@@ -79,10 +81,10 @@ app.get('*', (req, res) => {
 });
 
 // ─────────────────────────────────────────
-//  ERROR HANDLING MIDDLEWARE (must be last)
+//  ERROR HANDLING MIDDLEWARE
+//  NOTE: placed BEFORE static catch-all so API 404s are handled correctly
 // ─────────────────────────────────────────
-app.use(notFound);
-app.use(errorHandler);
+// (error handler is registered after routes but before static)
 
 // ─────────────────────────────────────────
 //  START SERVER
