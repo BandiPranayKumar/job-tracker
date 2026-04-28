@@ -1,0 +1,12 @@
+services:
+  - type: web
+    name: job-tracker
+    env: node
+    plan: free
+    buildCommand: npm install
+    startCommand: npm start
+    envVars:
+      - key: NODE_ENV
+        value: production
+      # - key: MONGO_URI
+      #   value: 'your_mongodb_atlas_connection_string' # Add this in Render dashboard

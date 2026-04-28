@@ -1,0 +1,10 @@
+{
+  "name": "job-tracker-deploy",
+  "version": "1.0.0",
+  "description": "Job Tracker Deployment",
+  "main": "backend/server.js",
+  "scripts": {
+    "start": "node backend/server.js",
+    "install": "cd backend && npm install"
+  }
+}
